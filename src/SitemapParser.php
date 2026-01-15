@@ -525,13 +525,18 @@ class SitemapParser implements SitemapParserInterface
                     $csv = fopen('php://temp', 'r+');
                     fputcsv($csv, ['URL', 'Priority', 'Change Frequency', 'Last Modified', 'Sitemap']);
                     foreach ($urls as $urlData) {
-                        fputcsv($csv, [
-                            $urlData['url'],
-                            $urlData['priority'] ?? '',
-                            $urlData['changefreq'] ?? '',
-                            $urlData['lastmod'] ?? '',
-                            $urlData['sitemap'] ?? '',
-                        ]);
+                        if (is_array($urlData)) {
+                            fputcsv($csv, [
+                                $urlData['url'],
+                                $urlData['priority'] ?? '',
+                                $urlData['changefreq'] ?? '',
+                                $urlData['lastmod'] ?? '',
+                                $urlData['sitemap'] ?? '',
+                            ]);
+                        } else {
+                            fputcsv($csv, $urlData);
+                        }
+                        
                     }
                     rewind($csv);
                     $content = stream_get_contents($csv);
@@ -540,7 +545,7 @@ class SitemapParser implements SitemapParserInterface
                     
                 case 'txt':
                 default:
-                    $content = implode("\n", array_column($urls, 'url'));
+                    $content = implode("\n", $urls);
                     break;
             }
             
