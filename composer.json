@@ -2,13 +2,20 @@
     "name": "dnsinyukov/sitemap-parser",
     "description": "Powerful PHP package for parsing sitemap.xml files",
     "type": "library",
-    "keywords": ["sitemap", "parser", "xml", "seo"],
+    "keywords": [
+        "sitemap",
+        "parser",
+        "xml",
+        "seo"
+    ],
     "homepage": "https://github.com/dnsinyukov/sitemap-parser",
     "license": "MIT",
-    "authors": [{
-        "name": "Denis Sinyukov",
-        "email": "dnsinyukov@gmail.com"
-    }],
+    "authors": [
+        {
+            "name": "Denis Sinyukov",
+            "email": "dnsinyukov@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.0",
@@ -17,8 +24,6 @@
         "ext-zlib": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
-        "phpstan/phpstan": "^1.10",
         "psr/cache": "^1.0 || ^2.0 || ^3.0"
     },
     "autoload": {
@@ -26,18 +31,5 @@
             "Coderden\\SitemapParser\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Coderden\\SitemapParser\\Tests\\": "tests/"
-        }
-    },
-    "scripts": {
-        "test": "phpunit",
-        "analyze": "phpstan analyse src --level=8"
-    },
-    "suggest": {
-        "psr/cache-implementation": "For caching parsed sitemaps"
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "minimum-stability": "dev"
 }
