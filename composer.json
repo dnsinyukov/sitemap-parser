@@ -1,5 +1,5 @@
 {
-    "name": "dnsinyukov/sitemap-parser",
+    "name": "coderden/sitemap-parser",
     "description": "Powerful PHP package for parsing sitemap.xml files",
     "type": "library",
     "keywords": [
