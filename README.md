@@ -304,13 +304,122 @@ foreach ($allUrls as $urlData) {
 }
 ```
 
+## Advanced Filtering
+
+The parser supports sophisticated filtering with exclusion patterns, skipping, and sampling.
+
+### Basic Filters
+
+```php
+// Parse with basic filters
+$result = SitemapHelper::parse('https://example.com/sitemap.xml', [
+    'pattern' => '#/blog/#',
+    'min_priority' => 0.5,
+    'limit' => 100,
+]);
+```
+
+### Exclusion Filters
+
+
+```php
+// Exclude by pattern
+$urls = SitemapHelper::extractExcluding(
+    'https://example.com/sitemap.xml',
+    ['/admin/', '/private/'],
+    ['pattern' => '#/blog/#']
+);
+
+// Exclude by string contains
+$urls = SitemapHelper::extractExcludingStrings(
+    'https://example.com/sitemap.xml',
+    ['admin', 'private', 'test'],
+    ['pattern' => '#/blog/#']
+);
+
+// Exclude by domain
+$urls = SitemapHelper::extractExcludingDomains(
+    'https://example.com/sitemap.xml',
+    ['cdn.example.com', 'static.example.com']
+);
+```
+
+### Skipping and Sampling
+
+```php
+// Skip first N URLs
+$urls = SitemapHelper::extractWithSkip(
+    'https://example.com/sitemap.xml',
+    $skipFirst = 10,
+    $skipLast = 5
+);
+
+// Take only first N URLs
+$urls = SitemapHelper::extractFirst(
+    'https://example.com/sitemap.xml',
+    $limit = 50
+);
+
+// Take only last N URLs
+$urls = SitemapHelper::extractLast(
+    'https://example.com/sitemap.xml',
+    $limit = 50
+);
+
+// Take every Nth URL (sampling)
+$urls = SitemapHelper::extractEveryNth(
+    'https://example.com/sitemap.xml',
+    $nth = 10
+);
+
+// Take random URLs
+$urls = SitemapHelper::extractRandom(
+    'https://example.com/sitemap.xml',
+    $count = 20
+);
+
+// Offset and limit (pagination)
+$urls = SitemapHelper::extractWithOffset(
+    'https://example.com/sitemap.xml',
+    $offset = 100,
+    $limit = 50
+);
+```
+
+### Combined Filters
+
+```php
+// Complex filtering with multiple conditions
+$urls = SitemapHelper::extractUrls('https://example.com/sitemap.xml', [
+    // Include only blog URLs
+    'pattern' => '#/blog/#',
+    
+    // Exclude admin and test URLs
+    'exclude_pattern' => '#/(admin|test)/#',
+    
+    // Skip first 10 items
+    'skip_first' => 10,
+    
+    // Take only items with priority > 0.5
+    'min_priority' => 0.5,
+    
+    // Sort by last modified date (newest first)
+    'sort_by' => 'lastmod',
+    'sort_direction' => 'desc',
+    
+    // Only URLs modified in 2024
+    'lastmod_after' => '2024-01-01',
+    'lastmod_before' => '2024-12-31',
+    
+    // Final limit
+    'limit' => 100,
+]);
+```
+
 
 ### Integration with Web Crawlers
 
 ```php
-use YourVendor\SitemapParser\SitemapParser;
-use GuzzleHttp\Client;
-
 class SiteCrawler {
     private SitemapParser $sitemapParser;
     private Client $httpClient;
